@@ -9,11 +9,11 @@
   copy: src={{ source_file }} dest={{ dest_file }} mode=0555
   notify: restart httpd
 
-- name: copy images
-  copy: src={{ item }} dest={{ dest_folder }} mode=0555
-  notify: restart httpd        
-  loop:
-    - "ilovedogs.jpg"
+#- name: copy images
+#  copy: src={{ item }} dest={{ dest_folder }} mode=0555
+#  notify: restart httpd        
+#  loop:
+#    - "ilovedogs.jpg"
 
 - name: start httpd
   service: name=httpd state=started enabled=yes
