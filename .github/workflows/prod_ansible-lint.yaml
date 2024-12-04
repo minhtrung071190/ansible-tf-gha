@@ -1,0 +1,30 @@
+# .github/workflows/ansible-lint.yml
+name: Ansible Lint
+
+on:
+  pull_request:
+    branches: 
+      - "main"
+
+jobs:
+  lint:
+    name: Run Ansible Lint
+    runs-on: ubuntu-24.04  # You can change this to a supported version like ubuntu-latest if necessary.
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  # Checks out the repository code
+
+      - name: Set up Python
+        uses: actions/setup-python@v4  # Sets up Python for ansible-lint
+        with:
+          python-version: '3.x'  # You can specify a specific version of Python if needed.
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible ansible-lint  # Installs Ansible and ansible-lint.
+
+      - name: Run ansible-lint
+        run: |
+          ansible-lint prod/prod_playbook.yml  # Replace with the correct path to your playbook or role

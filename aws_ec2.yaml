@@ -6,6 +6,10 @@ keyed_groups:
   - key: tags.is_ansible_managed | string
     prefix: ansible_
     separator: ""
+
+  - key: tags.Environment | string
+    prefix: env_
+    separator: ""
 filters:
   instance-state-name: running
 compose:
