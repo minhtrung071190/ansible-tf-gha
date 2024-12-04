@@ -1,37 +1,22 @@
 ---
-- hosts: ansible_true
-  gather_facts: True
-  become: yes
+- name: update webserver
+  command: yum update -y
 
-  vars:
-    source_file: ./index.html
-    dest_file: /var/www/html
+- name: install httpd
+  yum: name=httpd state=present
 
-  tasks:
-    - block:
-      - name: update webserver
-        command: yum update -y
-      
-      - name: install httpd
-        yum: name=httpd state=present
+- name: copy index.html
+  copy: src={{ source_file }} dest={{ dest_file }} mode=0555
+  notify: restart httpd
 
-      - name: copy index.html
-        copy: src={{ source_file }} dest={{ dest_file }} mode=0555
-        notify: restart httpd
-      
-      - name: copy images
-        copy: src={{ item }} dest={{ dest_folder }} mode=0555
-        notify: restart httpd        
-        loop:
-         - "ilovedogs.jpg"
+- name: copy images
+  copy: src={{ item }} dest={{ dest_folder }} mode=0555
+  notify: restart httpd        
+  loop:
+    - "ilovedogs.jpg"
 
-      - name: start httpd
-        service: name=httpd state=started enabled=yes
-      when: 
-        - ansible_os_family == "RedHat"   
-
-  handlers:
-    - name: restart httpd
-      service: name=httpd state=restarted
-
-          
+- name: start httpd
+  service: name=httpd state=started enabled=yes
+  when: 
+  - ansible_os_family == "RedHat"   
+  

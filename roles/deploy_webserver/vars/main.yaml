@@ -1,4 +1,4 @@
 ---
-source_folder: ../templates/index.html
+source_file: ../templates/index.html
 dest_folder : /var/www/html
 owner       : GroupX
