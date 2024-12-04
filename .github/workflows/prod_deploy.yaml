@@ -36,7 +36,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ansible
-          
+
       - name: List directory contents
         run: ls -R
 
@@ -82,6 +82,6 @@ jobs:
       - name: Apply Ansible Changes
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          ansible-playbook -i aws_ec2.yaml prod/prod_playbook.yml
+          ansible-playbook -i aws_ec2.yaml ./prod/prod_playbook.yml
         shell: bash
         working-directory: ./prod
