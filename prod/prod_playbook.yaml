@@ -4,7 +4,4 @@
   become: yes
 
   roles:
-   - deploy_webserver
-  
-  roles-path:
-   - ./roles
+   - { role: deploy_webserver }
