@@ -1,0 +1,12 @@
+---
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+keyed_groups:
+  - key: tags.is_ansible_managed | string
+    prefix: ansible_
+    separator: ""
+filters:
+  instance-state-name: running
+compose:
+  ansible_host: private_ip_address

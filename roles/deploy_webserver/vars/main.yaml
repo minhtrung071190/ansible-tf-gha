@@ -1,0 +1,4 @@
+---
+source_folder: ../templates/index.html
+dest_folder : /var/www/html
+owner       : GroupX
