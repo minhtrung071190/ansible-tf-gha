@@ -37,9 +37,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ansible
 
-      - name: find playbook
-        run: sudo find / -type f -name prod_playbook.yml
-
       - name: Output Ansible Results to PR
         uses: actions/github-script@v6
         if: github.event_name == 'pull_request'  # Only run this for PR events
@@ -82,6 +79,6 @@ jobs:
       - name: Apply Ansible Changes
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          ansible-playbook -i aws_ec2.yaml prod/prod_playbook.yml
+          ansible-playbook -i aws_ec2.yaml /home/runner/work/acs-project-ansible/acs-project-ansible/prod/prod_playbook.yml
         shell: bash
         working-directory: prod
