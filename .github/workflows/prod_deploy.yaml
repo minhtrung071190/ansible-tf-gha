@@ -38,7 +38,7 @@ jobs:
           sudo apt-get install -y ansible
 
       - name: List directory contents
-        run: ls -R
+        run: pwd
 
       - name: Output Ansible Results to PR
         uses: actions/github-script@v6
@@ -82,6 +82,6 @@ jobs:
       - name: Apply Ansible Changes
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          ansible-playbook -i aws_ec2.yaml ./prod/prod_playbook.yml
+          ansible-playbook -i aws_ec2.yaml prod/prod_playbook.yml
         shell: bash
-        working-directory: ./prod
+        working-directory: prod
