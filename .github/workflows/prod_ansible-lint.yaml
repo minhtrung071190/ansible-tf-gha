@@ -27,4 +27,4 @@ jobs:
 
       - name: Run ansible-lint
         run: |
-          ansible-lint /home/runner/work/acs-project-ansible/acs-project-ansible/prod/prod_playbook.yml  # Replace with the correct path to your playbook or role
+          ansible-lint ./prod/prod_playbook.yml  # Replace with the correct path to your playbook or role
