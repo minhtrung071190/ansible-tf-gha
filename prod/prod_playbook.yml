@@ -2,6 +2,6 @@
 - hosts: ansible_true
   gather_facts: True
   become: yes
-#
+
   roles:
    - { role: ../roles/deploy_webserver }
