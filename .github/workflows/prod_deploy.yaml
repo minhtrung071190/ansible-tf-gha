@@ -36,11 +36,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ansible
-          
+
       - name: Install boto3
         run: |
           sudo python -m pip install --upgrade pip
           sudo pip install boto3 botocore
+          sudo ansible-galaxy collection install amazon.aws
 
       - name: Output Ansible Results to PR
         uses: actions/github-script@v6
