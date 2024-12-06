@@ -3,13 +3,13 @@ name: "Ansible Deployment"
 on:
   push:
     branches:
-      - main
+      - prod
     paths:
       - 'prod/**'
 
   pull_request:
     branches:
-      - main
+      - prod
     paths:
       - 'prod/**'
 
@@ -27,6 +27,8 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      ANSIBLE_SSH_PRIVATE_KEY_FILE: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY_FILE }}
+      ANSIBLE_USER: ${{ secrets.ANSIBLE_USER }}
 
     steps:
       - name: Checkout Repository
@@ -42,6 +44,11 @@ jobs:
       - name: Install boto3 and botocore for Ansible
         run: |
          /opt/pipx/venvs/ansible-core/bin/python -m pip install boto3 botocore
+      
+      - name: setup ssh private key
+        run: |
+         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ${{ github.workspace }}/private_key.pem
+         sudo chmod 600 private_key.pem
 
 
       - name: Output Ansible Results to PR
@@ -84,8 +91,8 @@ jobs:
 
       # Apply changes (this step can be adjusted for your needs)
       - name: Apply Ansible Changes
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/prod' && github.event_name == 'push'
         run: |
-          ansible-playbook -i ${{ github.workspace }}/aws_ec2.yaml ${{ github.workspace }}/prod/prod_playbook.yml
+          ansible-playbook -i ${{ github.workspace }}/aws_ec2.yaml ${{ github.workspace }}/prod/prod_playbook.yml --private-key ${{ github.workspace }}/private_key.pem -u ${{ secrets.ANSIBLE_USER }} -e 'ansible_ssh_common_args="-o StrictHostKeyChecking=no"'
         shell: bash
         working-directory: ./prod
