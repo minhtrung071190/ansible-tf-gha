@@ -50,10 +50,6 @@ jobs:
          echo "${{ secrets.VOC_KEY }}" > ${{ github.workspace }}/private_key.pem
          sudo chmod 600 private_key.pem
       
-      - name: print private key
-        run: |
-         cat ${{ github.workspace }}/private_key.pem
-      
       - name: Output Ansible Results to PR
         uses: actions/github-script@v6
         if: github.event_name == 'pull_request'  # Only run this for PR events
