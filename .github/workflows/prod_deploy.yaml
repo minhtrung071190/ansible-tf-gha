@@ -3,7 +3,7 @@ name: "Ansible Deployment"
 on:
   push:
     branches:
-      - prod
+      - main
     paths:
       - 'prod/**'
 
@@ -27,7 +27,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-      ANSIBLE_SSH_PRIVATE_KEY_FILE: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY_FILE }}
+      VOC_KEY: ${{ secrets.VOC_KEY }}
       ANSIBLE_USER: ${{ secrets.ANSIBLE_USER }}
 
     steps:
@@ -47,10 +47,13 @@ jobs:
       
       - name: setup ssh private key
         run: |
-         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ${{ github.workspace }}/private_key.pem
+         echo "${{ secrets.VOC_KEY }}" > ${{ github.workspace }}/private_key.pem
          sudo chmod 600 private_key.pem
-
-
+      
+      - name: print private key
+        run: |
+         cat ${{ github.workspace }}/private_key.pem
+      
       - name: Output Ansible Results to PR
         uses: actions/github-script@v6
         if: github.event_name == 'pull_request'  # Only run this for PR events
@@ -91,7 +94,7 @@ jobs:
 
       # Apply changes (this step can be adjusted for your needs)
       - name: Apply Ansible Changes
-        if: github.ref == 'refs/heads/prod' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           ansible-playbook -i ${{ github.workspace }}/aws_ec2.yaml ${{ github.workspace }}/prod/prod_playbook.yml --private-key ${{ github.workspace }}/private_key.pem -u ${{ secrets.ANSIBLE_USER }} -e 'ansible_ssh_common_args="-o StrictHostKeyChecking=no"'
         shell: bash

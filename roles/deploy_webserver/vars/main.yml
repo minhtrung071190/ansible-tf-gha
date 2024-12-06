@@ -3,6 +3,6 @@ source_file: ../templates/index.html
 dest_file  : /var/www/html
 owner       : GroupX
 ansible_user                 : ec2-user
-ansible_ssh_private_key_file : ${{ github.workspace }}/private_key.pem
+ansible_ssh_private_key_file : /home/runner/work/acs-project-ansible/acs-project-ansible/private_key.pem
 shell                        : /bin/bash
 environment                  : prod
