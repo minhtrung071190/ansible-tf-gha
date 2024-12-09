@@ -96,7 +96,7 @@ jobs:
 
       # Apply changes (this step can be adjusted for your needs)
       - name: Apply Ansible Changes
-        if: github.event_name == 'repository_dispatch' || (github.event_name == 'push' && github.head_commit.message != 'Trigger repository_dispatch')
+        if: github.event_name == 'repository_dispatch' || github.ref == 'refs/heads/prod' && github.event_name == 'push'
         run: |
           ansible-playbook -i ../aws_ec2.yaml prod_playbook.yml --private-key ../key_pairs/private_key.pem -u ${{ secrets.ANSIBLE_USER }} -e 'ansible_ssh_common_args="-o StrictHostKeyChecking=no"'
         shell: bash
