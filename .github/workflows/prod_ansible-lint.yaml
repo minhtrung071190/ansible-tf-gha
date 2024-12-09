@@ -26,5 +26,6 @@ jobs:
           pip install ansible ansible-lint  # Installs Ansible and ansible-lint.
 
       - name: Run ansible-lint
+        work-directory: ./prod
         run: |
-          ansible-lint ./prod/prod_playbook.yml  # Replace with the correct path to your playbook or role
+          ansible-lint prod_playbook.yml  # Replace with the correct path to your playbook or role

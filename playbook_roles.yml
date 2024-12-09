@@ -1,7 +1,0 @@
----
-- hosts: ansible_true
-  gather_facts: True
-  become: yes
-
-  roles:
-   - { role: deploy_webserver }
