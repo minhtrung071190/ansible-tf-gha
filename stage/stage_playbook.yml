@@ -1,0 +1,9 @@
+---
+- hosts: ansible_true
+  gather_facts: True
+  become: yes
+  vars_files:
+   - ../prod/group_vars/stage_vars.yml
+#
+  roles:
+   - { role: ../roles/deploy_webserver }
