@@ -37,7 +37,8 @@ ansible_ssh_private_key_file : ../key_pairs/private_key.pem
 #Private key and control node
 
 Control node: it uses github action runner to deploy control node in workflow
-Private key: key value is stored securely in github environment secret. Then it's passed into control node when workflow is triggered. Eventually, it's destroyed after the workflow is completed
+
+Private key: key value is stored securely in github environment secret. Then it's passed temporarily into control node when workflow is triggered. Eventually, it's destroyed after the workflow is completed
 ```
       - name: setup ssh private key
         working-directory: ./key_pairs
